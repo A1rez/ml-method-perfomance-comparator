@@ -23,12 +23,14 @@ def KNNeighbors (xTrain, xTest, yTrain, Ytest):
 
     knn.fit(xTrain, yTrain)
 
-    train_predictions = knn.predict(X_train)
-    test_predictions = knn.predict(X_test)
+    train_predictions = knn.predict(xTrain)
+    test_predictions = knn.predict(xTest)
+    train_confu_matrix = confusion_matrix(yTrain, train_predictions)
+    test_confu_matrix = confusion_matrix(Ytest, test_predictions)
 
     class_report = classification_report(y_pred=test_predictions, y_true=y_test, output_dict=True)
 
-    return [class_report['accuracy'],class_report['macro avg']['precision'],class_report['macro avg']['recall'],class_report['macro avg']['f1-score']]
+    return [class_report['accuracy'],class_report['macro avg']['precision'],class_report['macro avg']['recall'],class_report['macro avg']['f1-score']], [train_confu_matrix,test_confu_matrix]
 
 def RandomForest(xTrain, xTest, yTrain, Ytest):
 
@@ -36,13 +38,15 @@ def RandomForest(xTrain, xTest, yTrain, Ytest):
 
     rf.fit(xTrain, yTrain)
 
-    train_predictions = rf.predict(X_train)
-    test_predictions = rf.predict(X_test)
+    train_predictions = rf.predict(xTrain)
+    test_predictions = rf.predict(xTest)
+    train_confu_matrix = confusion_matrix(yTrain, train_predictions)
+    test_confu_matrix = confusion_matrix(Ytest, test_predictions)
 
 
     class_report = classification_report(y_pred=test_predictions, y_true=y_test, output_dict=True)
 
-    return [class_report['accuracy'],class_report['macro avg']['precision'],class_report['macro avg']['recall'],class_report['macro avg']['f1-score']]
+    return [class_report['accuracy'],class_report['macro avg']['precision'],class_report['macro avg']['recall'],class_report['macro avg']['f1-score']], [train_confu_matrix,test_confu_matrix]
 
 def SvM(xTrain, xTest, yTrain, Ytest):
 
@@ -50,13 +54,14 @@ def SvM(xTrain, xTest, yTrain, Ytest):
 
     svm.fit(xTrain, yTrain)
 
-    train_predictions = svm.predict(X_train)
-    test_predictions = svm.predict(X_test)
-
+    train_predictions = svm.predict(xTrain)
+    test_predictions = svm.predict(xTest)
+    train_confu_matrix = confusion_matrix(yTrain, train_predictions)
+    test_confu_matrix = confusion_matrix(Ytest, test_predictions)
 
     class_report = classification_report(y_pred=test_predictions, y_true=y_test, output_dict=True)
 
-    return [class_report['accuracy'],class_report['macro avg']['precision'],class_report['macro avg']['recall'],class_report['macro avg']['f1-score']]
+    return [class_report['accuracy'],class_report['macro avg']['precision'],class_report['macro avg']['recall'],class_report['macro avg']['f1-score']], [train_confu_matrix,test_confu_matrix]
 
 def MlP(xTrain, xTest, yTrain, Ytest):
 
@@ -64,23 +69,37 @@ def MlP(xTrain, xTest, yTrain, Ytest):
 
     mlp.fit(xTrain, yTrain)
 
-    train_predictions = mlp.predict(X_train)
-    test_predictions = mlp.predict(X_test)
-
+    train_predictions = mlp.predict(xTrain)
+    test_predictions = mlp.predict(xTest)
+    train_confu_matrix = confusion_matrix(yTrain, train_predictions)
+    test_confu_matrix = confusion_matrix(Ytest, test_predictions)
 
     class_report = classification_report(y_pred=test_predictions, y_true=y_test, output_dict=True)
 
-    return [class_report['accuracy'],class_report['macro avg']['precision'],class_report['macro avg']['recall']
-        ,class_report['macro avg']['f1-score']]
+    return [class_report['accuracy'],class_report['macro avg']['precision'],class_report['macro avg']['recall'],class_report['macro avg']['f1-score']], [train_confu_matrix,test_confu_matrix]
+
 
 
 iris = datasets.load_iris()         #adjust to your dataset
 
 X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2, random_state=46)
 
+both_data = []
 desempenho = []
+confusion_data = []
 
-desempenho.append(KNNeighbors(X_train, X_test, y_train, y_test))
-desempenho.append(RandomForest(X_train, X_test, y_train, y_test))
-desempenho.append(SvM(X_train, X_test, y_train, y_test))
-desempenho.append(MlP(X_train, X_test, y_train, y_test))
+both_data = (KNNeighbors(X_train, X_test, y_train, y_test))
+desempenho.append(both_data[0])
+confusion_data.append(both_data[1])
+
+both_data = (RandomForest(X_train, X_test, y_train, y_test))
+desempenho.append(both_data[0])
+confusion_data.append(both_data[1])
+
+both_data = (SvM(X_train, X_test, y_train, y_test))
+desempenho.append(both_data[0])
+confusion_data.append(both_data[1])
+
+both_data = (MlP(X_train, X_test, y_train, y_test))
+desempenho.append(both_data[0])
+confusion_data.append(both_data[1])
