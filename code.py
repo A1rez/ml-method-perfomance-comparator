@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as pd
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from tkinter import Tk, filedialog
@@ -78,6 +78,37 @@ def MlP(xTrain, xTest, yTrain, Ytest):
 
     return [class_report['accuracy'],class_report['macro avg']['precision'],class_report['macro avg']['recall'],class_report['macro avg']['f1-score']], [train_confu_matrix,test_confu_matrix]
 
+def plot_performance(Perf):
+    labels_x = ['accuracy', 'precision', 'recall', 'f1-score']
+    labels_y = ['KNN', 'RANDOM FOREST', 'SVM', 'MLP']
+
+    plt.figure(figsize=(8, 6))
+    plt.imshow(Perf, cmap='YlGn', aspect='auto', vmin=0, vmax=1)
+
+    plt.xticks(np.arange(len(labels_x)), labels_x)
+    plt.yticks(np.arange(len(labels_y)), labels_y)
+
+    for i in range(len(labels_y)):
+        for j in range(len(labels_x)):
+            if Perf[i, j] > 0.8:
+                plt.text(j, i, format(Perf[i, j], '.2f'), ha="center", va="center", color="white", fontsize=14)
+            else:
+                plt.text(j, i, format(Perf[i, j], '.2f'), ha="center", va="center", color="black", fontsize=14)
+
+    for y in range(Perf.shape[0] + 1):
+        plt.axhline(y - 0.5, color='gray', linewidth=0.5)
+
+    for x in range(Perf.shape[1] + 1):
+        plt.axvline(x - 0.5, color='gray', linewidth=0.5)
+
+    cbar = plt.colorbar()
+    cbar.set_label('Values')
+
+    plt.title('Models Performance')
+    plt.show()
+
+    return
+
 
 
 iris = datasets.load_iris()         #adjust to your dataset
@@ -89,17 +120,25 @@ desempenho = []
 confusion_data = []
 
 both_data = (KNNeighbors(X_train, X_test, y_train, y_test))
+print(both_data)
 desempenho.append(both_data[0])
 confusion_data.append(both_data[1])
 
 both_data = (RandomForest(X_train, X_test, y_train, y_test))
+print(both_data)
 desempenho.append(both_data[0])
 confusion_data.append(both_data[1])
 
 both_data = (SvM(X_train, X_test, y_train, y_test))
+print(both_data)
 desempenho.append(both_data[0])
 confusion_data.append(both_data[1])
 
 both_data = (MlP(X_train, X_test, y_train, y_test))
+print(both_data)
 desempenho.append(both_data[0])
 confusion_data.append(both_data[1])
+
+desempenho=np.array(desempenho)
+
+plot_performance(desempenho)
