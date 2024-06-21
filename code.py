@@ -109,6 +109,25 @@ def plot_performance(Perf):
 
     return
 
+def confu_plot(Conf_data):
+    labels = iris.target_names          #adjust to your dataset
+    plt.figure(figsize=(18, 8))
+    plt.subplot(1, 2, 1)
+    sns.heatmap(Conf_data[0], annot=True, fmt='d', cmap='Blues', cbar=False,
+                xticklabels=labels, yticklabels=labels)
+    plt.title('Confusion Matrix - Training Data')
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+
+    plt.subplot(1, 2, 2)
+    sns.heatmap(Conf_data[1], annot=True, fmt='d', cmap='Greens', cbar=False,
+                xticklabels=labels, yticklabels=labels)
+    plt.title('Confusion Matrix - Test Data')
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+
+    plt.tight_layout()
+    plt.show()
 
 
 iris = datasets.load_iris()         #adjust to your dataset
@@ -120,25 +139,33 @@ desempenho = []
 confusion_data = []
 
 both_data = (KNNeighbors(X_train, X_test, y_train, y_test))
-print(both_data)
 desempenho.append(both_data[0])
 confusion_data.append(both_data[1])
 
 both_data = (RandomForest(X_train, X_test, y_train, y_test))
-print(both_data)
 desempenho.append(both_data[0])
 confusion_data.append(both_data[1])
 
 both_data = (SvM(X_train, X_test, y_train, y_test))
-print(both_data)
 desempenho.append(both_data[0])
 confusion_data.append(both_data[1])
 
 both_data = (MlP(X_train, X_test, y_train, y_test))
-print(both_data)
 desempenho.append(both_data[0])
 confusion_data.append(both_data[1])
 
 desempenho=np.array(desempenho)
 
 plot_performance(desempenho)
+
+option = (input('Do you want to see the confusion matrix of some method?\n y- yes\tn-no\n'))
+if option != 'y' and option != 'n':
+    while option != 'y' and option != 'n':
+        option =(input('Invalid option! Please choosa a valid option.\nDo you want to see the confusion matrix of some method?\n y- yes\tn-no\n'))
+if option == 'y':
+    chosen_method = int(input('Please, enter the number corresponding to method you want to plot the confusio matrix:\n1-KNN\n2-Random Forest\n3-SVM\n4-MLP\n'))
+    if chosen_method != 1 and chosen_method != 2 and chosen_method != 3 and chosen_method != 4:
+        while chosen_method != 1 and chosen_method != 2 and chosen_method != 3 and chosen_method != 4:
+            chosen_method = int(input('Invalid option! Please choosa a valid option.\nPlease, enter the number corresponding to method you want to plot the confusio matrix:\n1-KNN\n2-Random Forest\n3-SVM\n4-MLP\n'))
+    else:
+        confu_plot(confusion_data[chosen_method-1])
