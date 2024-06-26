@@ -37,6 +37,7 @@ Run the script to train and evaluate the models. The script will:
 To run the script, use:
 ```sh
 python code.py
+```
 
 ## Script Details
 
