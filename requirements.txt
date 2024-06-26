@@ -1,10 +1,11 @@
 
 ### requirements.txt
 
-```txt
+```sh txt
 pandas
 numpy
 seaborn
 matplotlib
 scikit-learn
 tk
+```
