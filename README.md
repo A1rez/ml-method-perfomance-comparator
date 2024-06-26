@@ -37,3 +37,21 @@ Run the script to train and evaluate the models. The script will:
 To run the script, use:
 ```sh
 python code.py
+
+## Script Details
+
+KNNeighbors: Trains and evaluates a K-Nearest Neighbors model.
+RandomForest: Trains and evaluates a Random Forest model.
+SvM: Trains and evaluates a Support Vector Machine model.
+MlP: Trains and evaluates a Multi-layer Perceptron model.
+plot_performance: Plots the performance metrics of all models using a heatmap.
+confu_plot: Plots confusion matrices for training and test data of a selected model.
+
+## Example Output
+
+The script will display a heatmap showing the performance metrics (accuracy, precision, recall, f1-score) of all models. If you choose to display confusion matrices, they will be plotted for the chosen model.
+
+## Acknowledgments
+
+The script uses the Iris dataset from the UCI Machine Learning Repository.
+The models are implemented using scikit-learn.
